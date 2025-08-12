@@ -7,7 +7,7 @@ def set_django_env(default_env='dev'):
     env_map = {
         'dev': 'rsite.settings.dev',
         'prod': 'rsite.settings.prod',
-        'staging': 'rsite.settings.staging',
+        # 'local_gunicorn': 'rsite.settings.local_gunicorn',
     }
 
     settings_module = env_map.get(env)

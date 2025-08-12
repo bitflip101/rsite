@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # Define virtual environment and requirements file paths
+# Use `readlink` to get the script's absolute directory, ensuring consistency
+PROJECT_PATH=$(dirname "$(readlink -f "$0")")
+# echo "The script directory is: $PROJECT_PATH"
 VENV_PATH="./rvenv"
-# REQUIREMENTS_PATH="requirements.txt"
+REQUIREMENTS_PATH="requirements.txt"
 GUNICORN_CONFIG_PATH="gunicorn.conf.py"
 
 # Check if the virtual environment exists and create it if not
@@ -16,21 +19,21 @@ fi
 source "$VENV_PATH/bin/activate"
 
 # Check if requirements are up to date
-# echo "📦 Installing/updating dependencies..."
-# pip install -r "$REQUIREMENTS_PATH"
+echo "📦 Installing/updating dependencies..."
+pip install -r "$REQUIREMENTS_PATH"
 
 # Run based on the first argument (prod or dev)
 if [ "$1" == "prod" ]; then
     echo "🚀 Starting Gunicorn with production settings..."
+    # Set the Django settings module
     export DJANGO_SETTINGS_MODULE="rsite.settings.prod"
-    # Use 'exec' to ensure graceful shutdown
-    # exec gunicorn rsite.wsgi:application --bind 0.0.0.0:8000
-    exec gunicorn -c "$GUNICORN_CONFIG_PATH" rsite.wsgi:application
-elif [ "$1" == "local_gunicorn" ]; then
-    echo "🧪 Starting Gunicorn for local testing with dev settings and config file..."
-    export DJANGO_SETTINGS_MODULE="rsite.settings.local_gunicorn"
-    # exec gunicorn rsite.wsgi:application --bind 0.0.0.0:8000
-    exec gunicorn -c "$GUNICORN_CONFIG_PATH" rsite.wsgi:application
+
+    # Define the socket path
+    export GUNICORN_SOCK_PATH="unix:${PROJECT_PATH}/gunicorn.sock"
+
+    # Execute Gunicorn, passing the bind path directly as an argument
+    exec gunicorn --bind "$GUNICORN_SOCK_PATH" --workers 3 rsite.wsgi:application
+    # exec gunicorn --bind unix:/home/rolito/Dev/py/Rsite/rsite/gunicorn.sock --workers 4 rsite.wsgi:application
 else
     echo "🧪 Starting Django development server with dev settings..."
     export DJANGO_SETTINGS_MODULE="rsite.settings.dev"
