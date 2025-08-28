@@ -1,4 +1,5 @@
 from .base import *
+from decouple import config
 
 DEBUG = False
 # SECURE_SSL_REDIRECT = True
@@ -7,6 +8,10 @@ DEBUG = False
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 # SECURE_BROWSER_XSS_FILTER = True
 # X_FRAME_OPTIONS = 'DENY'
+
+ALLOWED_HOSTS=['rsite.local','localhost','127.0.0.1']
+
+SECRET_KEY = config('SECRET_KEY')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')

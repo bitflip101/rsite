@@ -3,7 +3,7 @@
 # Define virtual environment and requirements file paths
 # Use `readlink` to get the script's absolute directory, ensuring consistency
 PROJECT_PATH=$(dirname "$(readlink -f "$0")")
-# echo "The script directory is: $PROJECT_PATH"
+echo "The script directory is: $PROJECT_PATH"
 VENV_PATH="./rvenv"
 REQUIREMENTS_PATH="requirements.txt"
 GUNICORN_CONFIG_PATH="gunicorn.conf.py"
