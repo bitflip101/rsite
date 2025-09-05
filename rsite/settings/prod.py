@@ -3,13 +3,13 @@ from decouple import config
 
 DEBUG = False
 # SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 # SECURE_BROWSER_XSS_FILTER = True
 # X_FRAME_OPTIONS = 'DENY'
 
-ALLOWED_HOSTS=['rsite.local','localhost','127.0.0.1']
+ALLOWED_HOSTS=['rsite.local','localhost','127.0.0.1', '192.168.8.101']
 
 SECRET_KEY = config('SECRET_KEY')
 
